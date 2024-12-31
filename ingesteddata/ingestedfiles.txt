@@ -1,1 +1,13 @@
 {"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
+{"ingestion_date": "2024-12-31", "file_name": "finaldata.csv", "input_folder_path": "practicedata", "output_folder_path": "ingesteddata", "ingested_files": ["dataset1.csv", "dataset2.csv"]}
