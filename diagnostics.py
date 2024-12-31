@@ -26,7 +26,8 @@ logging.info(f"Test data path: {test_data_path}")
 deployment_path = os.path.join(config['prod_deployment_path'])
 logging.info(f"Deployment path: {deployment_path}")
 
-data_path = os.path.join(test_data_path, 'testdata.csv')
+data_filename = 'testdata.csv'
+data_path = os.path.join(test_data_path, data_filename)
 logging.info(f"Data path: {data_path}")
 
 
