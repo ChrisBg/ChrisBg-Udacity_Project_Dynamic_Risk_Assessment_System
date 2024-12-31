@@ -2,11 +2,17 @@ from flask import Flask, session, jsonify, request
 import pandas as pd
 import numpy as np
 import pickle
-import create_prediction_model
-import diagnosis 
-import predict_exited_from_saved_model
+import diagnostics
+import scoring
+import reporting
 import json
+import tabulate
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+
 
 
 
@@ -18,33 +24,58 @@ with open('config.json','r') as f:
     config = json.load(f) 
 
 dataset_csv_path = os.path.join(config['output_folder_path']) 
+logging.info(f"Dataset CSV path: {dataset_csv_path}")
 
 prediction_model = None
 
 
+####################### Welcome Endpoint
+@app.route("/", methods=['GET','OPTIONS'])
+def welcome():        
+    return "Welcome to the API"
+
+
 #######################Prediction Endpoint
-@app.route("/prediction", methods=['POST','OPTIONS'])
+@app.route("/prediction", methods=['GET', 'POST'])
 def predict():        
-    #call the prediction function you created in Step 3
-    return #add return value for prediction outputs
+    if request.method == 'GET':
+        # For GET requests, use a default test file
+        file_path = 'testdata/testdata.csv'
+    else:  # POST
+        file_path = request.json.get('file_path')
+    
+    logging.info(f"File path: {file_path}")
+    data = pd.read_csv(file_path)
+    prediction = diagnostics.model_predictions(data)
+    return jsonify(prediction)  # Remove .tolist() since prediction is already a list
 
 #######################Scoring Endpoint
 @app.route("/scoring", methods=['GET','OPTIONS'])
-def stats():        
+def get_score():        
     #check the score of the deployed model
-    return #add return value (a single F1 score number)
+    f1_score = scoring.score_model()
+    logging.info(f"F1 score: {f1_score}")
+    return {'f1_score': f1_score}
 
 #######################Summary Statistics Endpoint
 @app.route("/summarystats", methods=['GET','OPTIONS'])
-def stats():        
+def get_summary_stats():        
     #check means, medians, and modes for each column
-    return #return a list of all calculated summary statistics
+    summary_stats = diagnostics.dataframe_summary()
+    # Convert DataFrame to dictionary
+    summary_stats_dict = summary_stats.to_dict()
+    logging.info(f"Summary stats: {summary_stats_dict}")
+    return jsonify(summary_stats_dict)
 
 #######################Diagnostics Endpoint
 @app.route("/diagnostics", methods=['GET','OPTIONS'])
-def stats():        
-    #check timing and percent NA values
-    return #add return value for all diagnostics
+def get_diagnostics():        
+    response_data = {
+        'missing_data': diagnostics.missing_data(),
+        'execution_time': diagnostics.execution_time(),
+        'outdated_packages': diagnostics.outdated_packages_list()
+    }
+    return jsonify(response_data)
 
 if __name__ == "__main__":    
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)

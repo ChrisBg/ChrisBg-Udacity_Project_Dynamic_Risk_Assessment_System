@@ -9,6 +9,8 @@ import pip
 from ingestion import merge_multiple_dataframe
 from training import train_model
 import subprocess
+from pkg_resources import working_set
+from tabulate import tabulate
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -142,17 +144,26 @@ def execution_time():
 ##################Function to check dependencies
 def outdated_packages_list():
     '''
-    Function to get the list of outdated packages
+    Function to get a formatted table of outdated packages
     '''
-    #get a list of all outdated packages
-    pip_outdated_command = ['pip', 'list', '--outdated']    
-    result = subprocess.run(pip_outdated_command, capture_output=True, text=True)
-    logging.info(f"Pip outdated command result: {result.stdout}")
-    with open('diagnostics_outdated_packages.txt', 'w') as f:
-        f.write(result.stdout)
-    logging.info(f"Outdated packages saved to {'diagnostics_outdated_packages.txt'}")
-
-    return result.stdout
+    import subprocess
+    from tabulate import tabulate
+    
+    # Get list of outdated packages using pip
+    result = subprocess.run(['pip', 'list', '--outdated', '--format=json'], 
+                          capture_output=True, text=True)
+    packages = json.loads(result.stdout)
+    
+    # Format data for tabulate
+    table_data = [[p['name'], p['version'], p['latest_version']] 
+                 for p in packages]
+    
+    # Create and return table string
+    return tabulate(
+        table_data,
+        headers=['Package', 'Version', 'Latest'],
+        tablefmt='grid'
+    )
 
 
 if __name__ == '__main__':
