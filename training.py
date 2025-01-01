@@ -20,18 +20,18 @@ def train_model():
     # Create model directory if it doesn't exist
     os.makedirs(model_path, exist_ok=True)
     
-    logging.info("Training model")
+    logging.info("Training: Training model")
 
     # read the data
     data = pd.read_csv(os.path.join(dataset_csv_path, 'finaldata.csv'))
-    logging.info(f"Data shape: {data.shape}")
+    logging.info(f"Training: Data shape: {data.shape}")
 
-    logging.info(f"Infos about the data: {data.info()}")
+    logging.info(f"Training:    Infos about the data: {data.info()}")
     # split the data into X and y 
     X = data.drop(['exited', 'corporation'], axis=1)
     y = data['exited']
-    logging.info(f"X shape: {X.shape}")
-    logging.info(f"y shape: {y.shape}")
+    logging.info(f"Training: X shape: {X.shape}")
+    logging.info(f"Training: y shape: {y.shape}")
 
     # use this logistic regression for training
     model = LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,
@@ -42,12 +42,12 @@ def train_model():
     
     #fit the logistic regression to your data
     model.fit(X, y)
-    logging.info("Model trained")
+    logging.info("Training: Model trained")
 
     #write the trained model to your workspace in a file called trainedmodel.pkl
     with open(os.path.join(model_path, 'trainedmodel.pkl'), 'wb') as f:
         pickle.dump(model, f)   
-    logging.info("Model saved")
+    logging.info("Training: Model saved")
      
 if __name__ == "__main__":
     train_model()

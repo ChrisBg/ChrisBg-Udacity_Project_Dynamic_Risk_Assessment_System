@@ -24,7 +24,7 @@ with open('config.json','r') as f:
     config = json.load(f) 
 
 dataset_csv_path = os.path.join(config['output_folder_path']) 
-logging.info(f"Dataset CSV path: {dataset_csv_path}")
+logging.info(f"App: Dataset CSV path: {dataset_csv_path}")
 
 prediction_model = None
 
@@ -44,7 +44,7 @@ def predict():
     else:  # POST
         file_path = request.json.get('file_path')
     
-    logging.info(f"File path: {file_path}")
+    logging.info(f"App: File path: {file_path}")
     data = pd.read_csv(file_path)
     prediction = diagnostics.model_predictions(data)
     return jsonify(prediction)  # Remove .tolist() since prediction is already a list
@@ -54,7 +54,7 @@ def predict():
 def get_score():        
     #check the score of the deployed model
     f1_score = scoring.score_model()
-    logging.info(f"F1 score: {f1_score}")
+    logging.info(f"App: F1 score: {f1_score}")
     return {'f1_score': f1_score}
 
 #######################Summary Statistics Endpoint
@@ -64,7 +64,7 @@ def get_summary_stats():
     summary_stats = diagnostics.dataframe_summary()
     # Convert DataFrame to dictionary
     summary_stats_dict = summary_stats.to_dict()
-    logging.info(f"Summary stats: {summary_stats_dict}")
+    logging.info(f"App: Summary stats: {summary_stats_dict}")
     return jsonify(summary_stats_dict)
 
 #######################Diagnostics Endpoint
@@ -75,6 +75,7 @@ def get_diagnostics():
         'execution_time': diagnostics.execution_time(),
         'outdated_packages': diagnostics.outdated_packages_list()
     }
+    logging.info(f"App: Diagnostics response: {response_data}")
     return jsonify(response_data)
 
 if __name__ == "__main__":    
