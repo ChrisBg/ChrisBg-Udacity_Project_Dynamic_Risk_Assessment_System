@@ -1,7 +1,5 @@
-import pickle
-from sklearn.model_selection import train_test_split
+# Importing libraries
 import pandas as pd
-import numpy as np
 from sklearn import metrics
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -10,6 +8,7 @@ import os
 from diagnostics import model_predictions
 import logging  
 
+# Setting up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
@@ -25,9 +24,6 @@ logging.info(f"Reporting: Test data path: {test_data_path}")
 
 output_model_path = os.path.join(config['output_model_path'])
 logging.info(f"Reporting: Output model path: {output_model_path}")
-
-
-
 
 
 
@@ -53,9 +49,6 @@ def cm_model(df):
 
 
 
-
-
-
 if __name__ == '__main__':
     #load test data
     logging.info(f"Reporting: Files in dataset_csv_path: {os.listdir(test_data_path)}")
@@ -63,9 +56,11 @@ if __name__ == '__main__':
     data_path = os.path.join(test_data_path, data_filename)
     logging.info(f"Reporting: Data path: {data_path}")
     try:
+        logging.info("Reporting: Loading test data")
         test_data = pd.read_csv(data_path)
         logging.info(f"Reporting: Test data shape: {test_data.shape}")
     except Exception as e:
         logging.error(f"Reporting: Error loading test data: {e}")
 
     cm_model(test_data)
+    logging.info("Reporting: Confusion matrix completed")

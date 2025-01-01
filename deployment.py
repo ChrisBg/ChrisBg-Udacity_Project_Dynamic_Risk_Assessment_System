@@ -1,17 +1,11 @@
-from flask import Flask, session, jsonify, request
-import pandas as pd
-import numpy as np
-import pickle
+# Importing necessary libraries
 import os
-from sklearn import metrics
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
 import json
 import logging  
 from glob import glob
 import shutil
 
-
+# Setting up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 

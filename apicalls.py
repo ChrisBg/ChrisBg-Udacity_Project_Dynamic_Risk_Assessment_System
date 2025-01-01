@@ -1,15 +1,17 @@
+# Importing necessary libraries
 import requests
 import os
 import json
 import logging
 
-
+# Setting up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Loading configuration
 with open('config.json', 'r') as f:
     config = json.load(f)
 
-
+# Setting up data paths
 test_data_path = config['test_data_path']
 data_filename = 'testdata.csv'
 data_path = os.path.join(test_data_path, data_filename)

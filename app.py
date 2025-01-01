@@ -1,19 +1,14 @@
-from flask import Flask, session, jsonify, request
-import pandas as pd
-import numpy as np
-import pickle
-import diagnostics
-import scoring
-import reporting
+# Importing necessary libraries
+from flask import Flask, jsonify, request
 import json
-import tabulate
 import os
 import logging
+import pandas as pd
+import diagnostics
+import scoring
 
+# Setting up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-
-
 
 
 ######################Set up variables for use in our script
@@ -47,7 +42,7 @@ def predict():
     logging.info(f"App: File path: {file_path}")
     data = pd.read_csv(file_path)
     prediction = diagnostics.model_predictions(data)
-    return jsonify(prediction)  # Remove .tolist() since prediction is already a list
+    return jsonify(prediction) 
 
 #######################Scoring Endpoint
 @app.route("/scoring", methods=['GET','OPTIONS'])

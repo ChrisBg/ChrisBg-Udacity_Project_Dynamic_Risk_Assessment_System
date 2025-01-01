@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import os
 import json
 from datetime import datetime
@@ -72,7 +71,7 @@ def merge_multiple_dataframe():
     
     record_file_path = os.path.join(output_folder_path, record_file_name)    
     # Write record to file (overwrite mode)
-    with open(record_file_path, 'w') as f:  # 'w' mode overwrites existing file
+    with open(record_file_path, 'w') as f: 
         f.write(json.dumps(record) + '\n')
     logging.info("Ingestion: Record file created/updated successfully")
 

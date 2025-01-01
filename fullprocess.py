@@ -1,3 +1,4 @@
+# Importing libraries
 import os
 from ingestion import merge_multiple_dataframe
 from diagnostics import model_predictions, dataframe_summary, missing_data, execution_time, outdated_packages_list
@@ -6,23 +7,22 @@ from training import train_model
 from scoring import score_model
 from sklearn import metrics
 from reporting import cm_model
-#import deployment
-#import diagnostics
-#import reporting
 import json
 import logging
 import pandas as pd
 
+# Setting up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
+# Loading configuration
 with open('config.json','r') as f:
     config = json.load(f) 
 
+# Modifying config 
 config['input_folder_path'] = 'sourcedata'
-#config['output_folder_path'] = 'ingesteddata'
 config['output_model_path'] = 'models'
 
+# Saving updated config
 logging.info(f"Fullprocess: Config: {config}")
 with open('config.json','w') as f:
     json.dump(config, f)
@@ -36,6 +36,7 @@ logging.info(f"Fullprocess: Output folder path: {output_folder_path}")
 output_model_path = os.path.join(config['output_model_path'])
 logging.info(f"Fullprocess: Output model path: {output_model_path}")
 
+# Main function
 def main():
     ##################Check and read new data
     #first, read ingestedfiles.txt
@@ -44,32 +45,34 @@ def main():
     deployment_data = os.path.join(deployment_path, 'ingestedfiles.txt')
     logging.info(f"Fullprocess: Deployment data: {deployment_data}") 
 
-    #old_ingested_files = []
+    # Reading ingestedfiles.txt
     try:
         with open(deployment_data, 'r') as file:
             first_line = file.readline().strip()
-            ingested_data = json.loads(first_line)  # Parse the first line as JSON
+            ingested_data = json.loads(first_line) 
             logging.info(f"Fullprocess: Ingested data: {ingested_data}")
     except Exception as e:
         logging.error(f"Fullprocess: Error reading ingestedfiles.txt: {e}")
         return  
 
-    
-    old_csv_files = ingested_data['ingested_files']  # Access the key directly
+    # Extracting old CSV files
+    old_csv_files = ingested_data['ingested_files'] 
     logging.info(f"Fullprocess: Old CSV files: {old_csv_files}")
 
 
-    #second, determine whether the source data folder has files that aren't listed in ingestedfiles.txt
+    # Checking if there are new CSV files
     input_folder_path = os.path.join(config['input_folder_path'])
     logging.info(f"Fullprocess: Input folder path: {input_folder_path}")
-    #logging.info(f"Input files: {os.listdir(input_folder_path), "*.csv"}")
 
+    # Extracting new CSV files
     new_csv_files = [f for f in os.listdir(input_folder_path) if f.endswith('.csv')]
     logging.info(f"Fullprocess: New CSV files found: {new_csv_files}")
 
+    # Checking for new CSV files
     new_csv = set(new_csv_files) - set(old_csv_files)
     logging.info(f"Fullprocess: New CSV files: {new_csv}")
 
+    # Proceeding with the process if there are new CSV files
     if new_csv:
         logging.info("Fullprocess: New data found. Proceeding with the process.")
     else:
@@ -86,24 +89,27 @@ def main():
     deployed_score_file = os.path.join(deployment_path, 'latestscore.txt')
     logging.info(f"Full process: Deployed score file: {deployed_score_file}")
 
+    # Reading the deployed score
     with open(deployed_score_file, 'r') as file:
         deployed_score = float(file.read().strip())
     logging.info(f"Full process: Deployed score: {deployed_score}")
 
-
+    # Reading the new data
     new_data_path = os.path.join(config['output_folder_path'], 'finaldata.csv') 
     logging.info(f"Full process: New data path: {new_data_path}")
-
     new_data = pd.read_csv(new_data_path)
     logging.info(f"Full process: New data: {new_data.head()}")
 
+    # Making predictions from new data
     predictions = model_predictions(new_data)
     logging.info(f"Full process: Model predictions: {predictions}")
 
+    # Calculating F1 score from new data
     y_test = new_data['exited']
     f1_score = metrics.f1_score(y_test, predictions)
     logging.info(f"Full process: F1 score: {f1_score}")
 
+    # Checking for model drift
     if f1_score < deployed_score:
         logging.info("Full process: Model drift detected. Proceeding with re-deployment.")
     else:
@@ -112,9 +118,12 @@ def main():
 
     ##################Deciding whether to proceed, part 2
     #if you found model drift, you should proceed. otherwise, do end the process here
+    
+    # Re-training the model
     train_model()
     logging.info("Full process: Model re-training completed")
 
+    # Re-scoring the model
     score_model()
     logging.info("Full process: Model re-scoring completed")
 

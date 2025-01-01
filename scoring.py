@@ -30,7 +30,6 @@ def score_model():
     # Load the test data
     test_data = pd.read_csv(os.path.join(test_data_path, 'testdata.csv'))
     logging.info(f"Scoring: Test data shape: {test_data.shape}")
-    #logging.info(f"Test data info: {test_data.info()}")
 
     # Split the test data into X and y
     X_test = test_data.drop(['exited', 'corporation'], axis=1)

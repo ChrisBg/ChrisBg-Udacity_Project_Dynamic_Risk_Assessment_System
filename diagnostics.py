@@ -1,15 +1,12 @@
 import pandas as pd
-import numpy as np
 import timeit
 import os
 import json
 import logging
 import pickle
-#import pip
 from ingestion import merge_multiple_dataframe
 from training import train_model
 import subprocess
-#from pkg_resources import working_set
 from tabulate import tabulate
 
 
@@ -88,17 +85,9 @@ def dataframe_summary():
         logging.error(f"Diagnostics: Error loading data: {e}")
         return None
     numerical_columns = data.select_dtypes(include=['int64', 'float64']).columns
-    stats = data[numerical_columns].agg(['mean', 'median', 'std']).transpose() # Only these stats in this order
+    stats = data[numerical_columns].agg(['mean', 'median', 'std']).transpose() 
     logging.info(f"Diagnostics: Summary statistics: {stats}")
 
-    #stats_path = os.path.join(deployment_path, 'summary_statistics.csv')
-    #   try:
-    #    stats.to_csv(stats_path, index=True)
-    #    logging.info(f"Summary statistics saved to {stats_path}")
-    #    logging.info("Computing & saving summary statistics successfully")
-    #except Exception as e:
-    #    logging.error(f"Error saving summary statistics: {e}")
-    
     return stats
 
 
@@ -113,19 +102,8 @@ def missing_data():
     data = pd.read_csv(data_path)
     logging.info(f"Diagnostics: Data shape: {data.shape}")
     missing_data = data.isna().sum()
-    #logging.info(f"Missing data: {missing_data}")
     percentage_missing = (missing_data / data.shape[0]) * 100
-    #logging.info(f"Percentage missing: {percentage_missing}")
-    #logging.info(f"Percentage missing type: {type(percentage_missing)}")
-    #logging.info(f"Percentage missing values: {percentage_missing.values}")
     logging.info(f"Diagnostics: Percentage missing list: {percentage_missing.tolist()}")
-    #missing_data_path = os.path.join(deployment_path, 'missing_data.csv')
-    #try:
-    #    missing_data.to_csv(missing_data_path, index=True)
-    #    logging.info(f"Missing data saved to {missing_data_path}")
-    #    logging.info("Computing & saving missing data successfully")
-    #except Exception as e:
-    #    logging.error(f"Error saving missing data: {e}")
     logging.info("Computing shares of missing data successfully")
     return percentage_missing.tolist()
 
